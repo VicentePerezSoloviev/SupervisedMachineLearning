@@ -1,2 +1,2 @@
 # SupervisedMachineLearning
- Materials for the Mineriía de datos subject in de UPM
+ Materials for the Mineriía de datos subject in the UPM
