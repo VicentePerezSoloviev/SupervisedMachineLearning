@@ -1,0 +1,55 @@
+---
+title: "FSS"
+author: "Vicente P. soloviev"
+date: "15/2/2022"
+output: html_document
+---
+
+# Selección de variables filter y wrapper
+
+## Wrapper FSS
+Para esta práctica usaremos los mismos datos que usamos en el notebook de python para selección de variables (train.csv).
+
+```{r}
+data = read.csv('data/train.csv', head=TRUE)
+dim(data)
+head(data)
+```
+
+
+```{r}
+library(psych)
+IVs <- as.matrix(data[,3:15])
+corr.test(IVs)
+```
+
+
+```{r}
+model <- lm(price_range~., data=data) #remove 1st column “id”
+summary(model)
+```
+
+
+```{r}
+library(MASS)
+step_for <- stepAIC(model, direction='forward')
+summary(step_for)
+```
+
+
+```{r}
+step_back <- stepAIC(model, direction="backward")
+summary(step_back)
+```
+
+
+```{r}
+step_both <- stepAIC(model, direction='both')
+summary(step_both)
+```
+
+
+```{r}
+
+```
+

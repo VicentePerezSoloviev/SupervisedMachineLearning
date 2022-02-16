@@ -1,0 +1,66 @@
+---
+title: "Regresión logística"
+author: "Vicente P. soloviev"
+date: "15/2/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(caret)
+```
+
+Este conjunto de datos (creditcard.csv) contiene transacciones realizadas con tarjetas de crédito en septiembre de 2013 por titulares europeos. Este conjunto de datos prescribe transacciones que ocurrieron en dos días, donde tenemos 492 fraudes de 284.807 transacciones.
+
+Contiene sólo variables numéricas de entrada que son el resultado de una transformación ACP (Análisis de componentes principales). Las características V1, V2, … V28 son los componentes principales, las únicas características que no han sido transformadas con ACP son ‘Tiempo’ y ‘Cantidad’. La característica ‘Tiempo’ contiene los segundos transcurridos entre cada transacción y la primera transacción en el conjunto de datos. La característica ‘Clase’ es la variable de respuesta y toma el valor 1 en caso de fraude y 0 en caso contrario.
+
+```{r}
+fraud <- read_csv(file = "data/creditcard.csv", progress = FALSE)
+fraud <- fraud %>%
+    filter(complete.cases(.)) %>%
+    mutate(Class = factor(Class))
+glimpse(fraud)
+```
+
+Primero se crea la data de entrenamiento y prueba para el modelo, luego se realizan los procesos de validación cruzada para reducir los problemas de sobre ajuste (Para que el modelo no se acostumbre siempre a los datos donde se entreno y funcione bien cuando lleguen nuevas observaciones), por ultimo se ajusta el modelo y se calculan las predicciones en conjunto con la matriz de confusión y el AUC.
+
+```{r}
+library(ROCR)
+set.seed(8585)
+inTrain <- createDataPartition(y = fraud$Class, 
+                               p = 0.75, list = FALSE)
+training <- fraud[inTrain,]
+testing <- fraud[-inTrain,]
+glm_model <- train(Class ~ ., training, method = "glm",
+               trControl = trainControl(
+                   method = "cv", number = 10,
+                   verboseIter = FALSE
+                   )
+               )
+pred_class <- predict(glm_model, testing)
+confusionMatrix(pred_class, testing$Class)
+```
+
+Como se puede observar en la matriz de confusión la precisión del modelo se encuentra en el 99% un buen indicador de la calidad del modelo.
+
+```{r}
+#### Calculos AUC 
+#### 
+pred_probs <- predict(glm_model, testing, type = "prob")
+probs <- pred_probs[, 2]
+auc_glm <- prediction(probs, testing$Class)
+### Valor del área bajo la curva 
+### 
+perf_auc <- performance(auc_glm, "auc")
+perf_auc@y.values[[1]]
+```
+
+En este caso observamos que un área bajo la curva para este modelo queda en 0.9780502 lo que se tendrá en cuenta para escoger del modelo a utilizar.
+
+```{r}
+perf <- performance(auc_glm, "tpr", "fpr")
+plot(perf)
+```
+

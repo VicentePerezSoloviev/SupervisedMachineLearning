@@ -1,0 +1,91 @@
+---
+title: "TAN and Naive Bayes"
+author: "Vicente P. soloviev"
+date: "15/2/2022"
+output: html_document
+---
+
+En este notebook vamos a trabajar con los clasificadores de Naive Bayes y Tree-augmented Naive Bayes. Recordemos que la principal diferencia existente es la estructura de la red Bayesiana que infiere el modelo internamente. Naive Bayes tiene una red Bayesiana en la que la variable predictora es apuntada por todas las variables regresoras, sin arcos entre ellas. TAN, sin embargo, si que acepta arcos entre los nodos de las variables regresoras.
+
+# Clasificador Naive Bayes
+Vamos a cargar la librería de bnlearn que es la más utlizada en el área de Machine Learning para el uso de redes Bayesianas en R. Creamos también una función que nos hará falta para evaluar la calidad del modelo con los datos de test.
+
+```{r}
+library(bnlearn)
+accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
+```
+
+Realizamos un split de los datos en entrenamiento y test para una validación honesta del modelo. En este caso tenemos 5000 instancias por lo que guardaremos un 20% para validación y el resto para entrenamiento. Usaremos el dataset de learning.test que está incluído en la librería de bnlearn. Es un dataset sintético sin ningun significado.
+
+```{r}
+learning.test
+```
+```{r}
+summary(learning.test)
+```
+
+```{r}
+training.set = learning.test[1:4000, ]
+test.set = learning.test[4001:5000, ]
+```
+
+Empezamos por el primer modelo: Naive Bayes. Vamos a ajustar el modelo con los datos de entrenamiento y visualizar la red bayesiana que infiere. Hagamos caso omiso a las direcciones de los arcos. Simplemente, observar que las variables regresoras (todas menos A) no tienen arcos apuntandose entre si.
+
+```{r}
+# this is an in-sample prediction with naive Bayes (parameter learning
+# is performed implicitly during the prediction).
+bn = naive.bayes(training.set, "A")
+plot(bn)
+```
+
+Vamos a ajustar la red con los datos de entrenamiento y predecir con los valores del dataset de test para realizar una validación honesta del modelo. Finalmente observamos la tabla de frecuencias. Nos dice "cuantas veces ha acertado el modelo". Por ejemplo, de todas las As, el modelo ha acertado 253 veces, una gran mayoría.
+
+```{r}
+fitted = bn.fit(bn, training.set)
+pred = predict(fitted, test.set)
+tab = table(pred, test.set[, "A"])
+tab
+```
+
+De esta forma podemos estimar la precisión del modelo con un porcentaje:
+
+```{r}
+accuracy(tab)
+```
+
+# TAN: Tree-augmented Naive Bayes
+Recodemos con el modelo TAN permite arcos entre las variables regresoras que también apuntan a la variable predictora. Recordemos no hacer caso a las direcciones de los arcos. Solo a su presencia entre dos variables. Vamos a ajustar el modelo con los datos de entrenamiento y visualizar la red bayesiana que infiere.
+
+```{r}
+tan = tree.bayes(training.set, "A")
+plot(tan)
+```
+
+Vamos a ajustar la red con los datos de entrenamiento y predecir con los valores del dataset de test para realizar una validación honesta del modelo. Finalmente observamos la tabla de frecuencias. Nos dice "cuantas veces ha acertado el modelo". Por ejemplo, de todas las As, el modelo ha acertado 253 veces, una gran mayoría.
+
+```{r}
+fitted = bn.fit(tan, training.set, method = "bayes")
+pred = predict(fitted, test.set)
+tab = table(pred, test.set[, "A"])
+tab
+```
+
+En base a la tabla de frecuencias estimamos su precisión, y vemos que es algo mayor a la que encontramos con Naive Bayes. 
+
+```{r}
+accuracy(tab)
+```
+
+
+# EJERCICIOS
+
+## Prueba a clasificar un dataset nuevo
+Usa la variable A como predictora y el resto como regresoras en el dataset de asia. Aquí debajo te dejo el código para importar el código. Usa un 20% del dataset para test, el resto para train en la validación honesta.
+
+```{r}
+data(asia)
+asia[] <- lapply(asia, factor)
+```
+
+## Cual es el resultado si usas como variable predictora la variable D?
+

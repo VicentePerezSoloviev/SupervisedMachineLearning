@@ -1,0 +1,86 @@
+---
+title: "KNN"
+author: "Vicente P. soloviev"
+date: "15/2/2022"
+output: html_document
+---
+
+## 1.- CARGA DE DATOS
+```{r}
+df <- data(iris)
+head(iris) ## Estructura de datos
+```
+
+## 2.- GENERAR UNA MUESTRA (90% del número total de filas en el conjunto de datoS)
+```{r}
+ran <- sample(1:nrow(iris), 0.7 * nrow(iris))
+ran
+```
+
+## 3.- CREAR LA FUNCIÓN DE NORMALIZACIÓN
+```{r}
+nor <-function(x) { (x -min(x))/(max(x)-min(x))   }
+nor
+```
+
+## 4.- EJECUTAR LA NORMALIZACIÓN DE LAS 4 PRIMERAS COLUMNAS DEL DATASET, COMO PREDICTORES
+```{r}
+iris_norm <- as.data.frame(lapply(iris[,c(1,2,3,4)], nor))
+head(iris_norm)
+```
+
+
+```{r}
+summary(iris_norm)
+```
+
+## 5.- EXTRAER EL CONJUNTO DE ENTRENAMIENTO
+```{r}
+iris_train <- iris_norm[ran,] 
+iris_train
+```
+
+## 6.- EXTRAER EL CONJUNTO DE VALIDACIÓN
+```{r}
+iris_test <- iris_norm[-ran,] 
+iris_test
+```
+
+## 7.- EXTRAER LA 5TA COLUMNA DEL DATASET DE ENTRENAMIENTO YA QUE SERÁ USADA COMO ARGUMENTO 'cl' EN LA FUNCIÓN KNN.
+## LA INFORMACIÓN DE ESA 5TA COLUMNA SE ALMACENA EN UNA NUEVA VARIABLE "IRIS_TARGET_CATEGORY"
+```{r}
+iris_target_category <- iris[ran,5]
+iris_target_category
+```
+
+## 8.- EXTRAER LA 5TA COLUMNA SI SE USA EL DATASET DE VALIDACIÓN PARA MEDIR LA PRECISIÓN (accuracy)
+```{r}
+iris_test_category <- iris[-ran,5]
+iris_test_category
+```
+
+## 9.- EJECUTAR LA FUNCIÓN K-NN
+```{r}
+library(class)
+pr <- knn(iris_train,iris_test,cl=iris_target_category,k=13)
+```
+
+## 10.- CREAR LA MATRIZ DE CONFUSIÓN
+```{r}
+tab <- table(pr,iris_test_category)
+tab
+```
+
+## 12.- PRECISIÓN (ACCURACY) --> DIVIDO LAS PREDICCIONES CORRECTAS ENTRE EL NÚMERO TOTAL DE PREDICCIONES
+```{r}
+accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
+accuracy(tab)
+```
+
+# EJERCICIO
+Encapsula en una función el código necesario para introducirlo en un bucle e ir cambiando el valor de k secuencialmente. Prueba k de 1 a 20, por ejemplo. Cual es el mejor valor?
+
+
+
+
+
