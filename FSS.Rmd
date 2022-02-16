@@ -16,6 +16,7 @@ dim(data)
 head(data)
 ```
 
+Sacamos la matriz de correlación entre las variables. 
 
 ```{r}
 library(psych)
@@ -23,12 +24,14 @@ IVs <- as.matrix(data[,3:15])
 corr.test(IVs)
 ```
 
+## Selección de variables Filter
 
 ```{r}
-model <- lm(price_range~., data=data) #remove 1st column “id”
+model <- lm(price_range~., data=data)
 summary(model)
 ```
 
+## Selección de variables wrapper forward (hacia delante)
 
 ```{r}
 library(MASS)
@@ -36,12 +39,14 @@ step_for <- stepAIC(model, direction='forward')
 summary(step_for)
 ```
 
+## Selección de variables wrapper backward (hacia atrás)
 
 ```{r}
 step_back <- stepAIC(model, direction="backward")
 summary(step_back)
 ```
 
+## Selección de variables wrapper backward y forward
 
 ```{r}
 step_both <- stepAIC(model, direction='both')

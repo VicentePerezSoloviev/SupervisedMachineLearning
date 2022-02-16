@@ -18,7 +18,7 @@ accuracy <- function(x){sum(diag(x)/(sum(rowSums(x)))) * 100}
 Realizamos un split de los datos en entrenamiento y test para una validación honesta del modelo. En este caso tenemos 5000 instancias por lo que guardaremos un 20% para validación y el resto para entrenamiento. Usaremos el dataset de learning.test que está incluído en la librería de bnlearn. Es un dataset sintético sin ningun significado.
 
 ```{r}
-learning.test
+head(learning.test)
 ```
 ```{r}
 summary(learning.test)
