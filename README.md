@@ -12,6 +12,9 @@
  - Logistic regression.
  - KNN.
  - Feature Subset selection. Filter and Wrapper approaches.
+
+ WEKA:
+ - Some .arff datasets for explanation.
  
  The students are then expected to find a dataset and apply all the classification models learnt in the lessonss and perform a comparative of the behaviour of this algorithms. 
  
