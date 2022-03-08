@@ -8,10 +8,11 @@ output: html_document
 ## 1.- CARGA DE DATOS
 ```{r}
 df <- data(iris)
+dim(iris)
 head(iris) ## Estructura de datos
 ```
 
-## 2.- GENERAR UNA MUESTRA (90% del número total de filas en el conjunto de datoS)
+## 2.- GENERAR UNA MUESTRA (70% del número total de filas en el conjunto de datoS)
 ```{r}
 ran <- sample(1:nrow(iris), 0.7 * nrow(iris))
 ran
@@ -78,9 +79,6 @@ accuracy(tab)
 ```
 
 # EJERCICIO
-Encapsula en una función el código necesario para introducirlo en un bucle e ir cambiando el valor de k secuencialmente. Prueba k de 1 a 20, por ejemplo. Cual es el mejor valor?
-
-
-
+Aprovecha eel código anterior necesario para introducirlo en un bucle e ir cambiando el valor de k secuencialmente. Prueba k de 1 a 20, por ejemplo. Cual es el mejor valor?
 
 

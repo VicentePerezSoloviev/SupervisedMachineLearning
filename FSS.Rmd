@@ -24,7 +24,13 @@ IVs <- as.matrix(data[,3:15])
 corr.test(IVs)
 ```
 
+```{r}
+colnames(data)
+```
+
+
 ## Selección de variables Filter
+En este caso especificamos que la variable objetivo es price_range
 
 ```{r}
 model <- lm(price_range~., data=data)
@@ -39,12 +45,26 @@ step_for <- stepAIC(model, direction='forward')
 summary(step_for)
 ```
 
+Imprimimos la informaciÓn.
+
+```{r}
+step_for$anova
+```
+
+
 ## Selección de variables wrapper backward (hacia atrás)
 
 ```{r}
 step_back <- stepAIC(model, direction="backward")
 summary(step_back)
 ```
+
+Imprimimos la informaciÓn.
+
+```{r}
+step_back$anova
+```
+
 
 ## Selección de variables wrapper backward y forward
 
@@ -53,8 +73,9 @@ step_both <- stepAIC(model, direction='both')
 summary(step_both)
 ```
 
+Imprimimos la información.
 
 ```{r}
-
+step_both$anova
 ```
 

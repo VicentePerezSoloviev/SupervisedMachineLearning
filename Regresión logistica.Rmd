@@ -24,7 +24,7 @@ fraud <- fraud %>%
 glimpse(fraud)
 ```
 
-Primero se crea la data de entrenamiento y prueba para el modelo, luego se realizan los procesos de validación cruzada para reducir los problemas de sobre ajuste (Para que el modelo no se acostumbre siempre a los datos donde se entreno y funcione bien cuando lleguen nuevas observaciones), por ultimo se ajusta el modelo y se calculan las predicciones en conjunto con la matriz de confusión y el AUC.
+Primero se crea la data de entrenamiento y prueba para el modelo, luego se realizan los procesos de validación cruzada para reducir los problemas de sobre ajuste (Para que el modelo no se acostumbre siempre a los datos donde se entreno y funcione bien cuando lleguen nuevas observaciones), y por ultimo se ajusta el modelo y se calculan las predicciones en conjunto con la matriz de confusión y el AUC.
 
 ```{r}
 library(ROCR)
@@ -43,7 +43,7 @@ pred_class <- predict(glm_model, testing)
 confusionMatrix(pred_class, testing$Class)
 ```
 
-Como se puede observar en la matriz de confusión la precisión del modelo se encuentra en el 99% un buen indicador de la calidad del modelo.
+Como se puede observar en la matriz de confusión la precisión del modelo se encuentra en el 98% un buen indicador de la calidad del modelo.
 
 ```{r}
 #### Calculos AUC 

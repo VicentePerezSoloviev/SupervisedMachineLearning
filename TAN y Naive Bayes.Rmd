@@ -19,6 +19,7 @@ Realizamos un split de los datos en entrenamiento y test para una validación ho
 
 ```{r}
 head(learning.test)
+dim(learning.test)
 ```
 ```{r}
 summary(learning.test)
@@ -82,9 +83,11 @@ accuracy(tab)
 ## Prueba a clasificar un dataset nuevo
 Usa la variable A como predictora y el resto como regresoras en el dataset de asia. Aquí debajo te dejo el código para importar el código. Usa un 20% del dataset para test, el resto para train en la validación honesta.
 
+
 ```{r}
 data(asia)
 asia[] <- lapply(asia, factor)
+dim(asia)
 ```
 
 ## Cual es el resultado si usas como variable predictora la variable D?
