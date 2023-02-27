@@ -7,16 +7,19 @@ output: html_document
 
 ## 1.- CARGA DE DATOS
 ```{r}
+library(class)
 df <- data(iris)
 dim(iris)
 head(iris) ## Estructura de datos
 ```
+
 
 ## 2.- GENERAR UNA MUESTRA (70% del número total de filas en el conjunto de datoS)
 ```{r}
 ran <- sample(1:nrow(iris), 0.7 * nrow(iris))
 ran
 ```
+
 
 ## 3.- CREAR LA FUNCIÓN DE NORMALIZACIÓN
 ```{r}
@@ -62,8 +65,7 @@ iris_test_category
 
 ## 9.- EJECUTAR LA FUNCIÓN K-NN
 ```{r}
-library(class)
-pr <- knn(iris_train,iris_test,cl=iris_target_category,k=13)
+pr <- knn(iris_train, iris_test, cl=iris_target_category, k=13)
 ```
 
 ## 10.- CREAR LA MATRIZ DE CONFUSIÓN
@@ -81,4 +83,12 @@ accuracy(tab)
 # EJERCICIO
 Aprovecha eel código anterior necesario para introducirlo en un bucle e ir cambiando el valor de k secuencialmente. Prueba k de 1 a 20, por ejemplo. Cual es el mejor valor?
 
+
+```{r}
+for (i in 1:20){
+  pr <- knn(iris_train, iris_test, cl=iris_target_category, k=i)
+  tab <- table(pr,iris_test_category)
+  print(accuracy(tab))
+}
+```
 

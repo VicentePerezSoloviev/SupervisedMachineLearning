@@ -20,7 +20,7 @@ Sacamos la matriz de correlación entre las variables.
 
 ```{r}
 library(psych)
-IVs <- as.matrix(data[,3:15])
+IVs <- as.matrix(data)
 corr.test(IVs)
 ```
 
