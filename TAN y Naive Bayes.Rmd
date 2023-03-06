@@ -91,20 +91,9 @@ asia[] <- lapply(asia, factor)
 dim(asia)
 ```
 
-```{r}
-training.set = asia[1:4000, ]
-test.set = asia[4000:5000, ]
 
-tan = tree.bayes(training.set, "A")
-plot(tan)
-```
 
-```{r}
-fitted = bn.fit(tan, training.set, method = "bayes")
-pred = predict(fitted, test.set)
-tab = table(pred, test.set[, "A"])
-accuracy(tab)
-```
+
 
 ## Cual es el resultado si usas como variable predictora la variable D?
 

@@ -84,11 +84,5 @@ accuracy(tab)
 Aprovecha eel código anterior necesario para introducirlo en un bucle e ir cambiando el valor de k secuencialmente. Prueba k de 1 a 20, por ejemplo. Cual es el mejor valor?
 
 
-```{r}
-for (i in 1:20){
-  pr <- knn(iris_train, iris_test, cl=iris_target_category, k=i)
-  tab <- table(pr,iris_test_category)
-  print(accuracy(tab))
-}
-```
+
 
